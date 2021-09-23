@@ -28,15 +28,16 @@
 #include <math.h>
 #include <process.h>
 #include <stdio.h>
-#include "../Source/ThirdParty/IniReader/iniReader.h"
+#include "../Source/ThirdParty/inireader/IniReader.h"
 #include "../Source/ThirdParty/ModUtils/MemoryMgr.h"
 
 using namespace std;
 
 // Config.ini variables
-bool useCustomFPSCap;
-bool useCustomFOV;
+int useCustomFPSCap;
+int useCustomFOV;
 int maxFPS;
+int ignoreUpdates;
 int customFOV;
 
 // Resolution and Aspect Ratio variables
@@ -44,10 +45,12 @@ int hRes;
 int vRes;
 float originalAspectRatio = 1.777777777777778;
 float aspectRatio;
+bool preserveYAxis;
 
 // FOV variables
 float originalFOV = 0.008726646192; // Declares the original 16:9 vertical FOV.
 float FOV;
+float FOVOffset;
 
 // Misc variables
 bool check = true; // do not change to false or else resolution checks won't run.
@@ -57,54 +60,57 @@ HMODULE baseModule = GetModuleHandle(NULL);
 
 void readConfig()
 {
-    cout.flush();
-    freopen_s((FILE**)stdout, "CONOUT$", "w", stdout); // Allows us to add outputs to the ASI Loader Console Window.
+	cout.flush();
+    //freopen(FILE**)stdout, "CONOUT$", "w", stdout); // Allows us to add outputs to the ASI Loader Console Window.
     cout.clear();
     cin.clear();
     CIniReader config("config.ini");
+    // Aspect Ratio Values
+    preserveYAxis = config.ReadBoolean("AspectRatio", "PreserveYAxis", false);
     // FOV Config Values
     useCustomFOV = config.ReadBoolean("FieldOfView", "useCustomFOV", false);
-    customFOV = config.ReadInteger("FieldOfView", "FOV", 90);
+    FOV = config.ReadInteger("FieldOfView", "FOV", 90);
     // Framerate/VSync Config Values
-    useCustomFPSCap = config.ReadBoolean("Framerate", "useCustomFPSCap", false);
-    maxFPS = config.ReadInteger("Framerate", "maxFPS", 200);
+    useCustomFPSCap = config.ReadBoolean("Experimental", "useCustomFPSCap", true);
+    maxFPS = config.ReadInteger("Experimental", "maxFPS", 144);
 }
 
-void fovCalc()
+void fovOffsetCalc()
 {
     // Declare the vertical and horizontal resolution variables.
-    int hRes = *(int*)((intptr_t)baseModule + 0x317DB38); // Grabs Horizontal Resolution integer.
-    int vRes = *(int*)((intptr_t)baseModule + 0x317DB3C); // Grabs Vertical Resolution integer.
+    int hRes = *(int*)((intptr_t)baseModule + 0x338AF74); // Grabs Horizontal Resolution integer.
+    int vRes = *(int*)((intptr_t)baseModule + 0x338AF78); // Grabs Vertical Resolution integer.
 
     // Convert the int values to floats, so then we can determine the aspect ratio.
-    float aspectRatio = (float)hRes / (float)vRes;
+    aspectRatio = (float)hRes / (float)vRes;
 
-    switch (useCustomFOV)
+    if (!preserveYAxis)
     {
-        case 0:
+        // If the aspect ratio is less than or equal to 16:9, use the standard Vert- offset, so 16:10 and 4:3 resolutions will look okay.
+        if (aspectRatio <= (16.0f / 9.0f))
+        {
+            FOVOffset = originalFOV;
+        }
+        // If the aspect ratio is greater than 16:9, then adjust the FOV offset based on the current screen resolution, as you don't want Vert- behavior in 21:9/32:9/48:9/etc.
+        else if (aspectRatio > (16.0f / 9.0f))
         {
             // If useCustomFOV is set to "0", then calculate the vertical FOV using the new aspect ratio, the old aspect ratio, and the original FOV.
-            FOV = round((2.0f * atan(((aspectRatio) / (16.0f / 9.0f)) * tan((originalFOV * 10000.0f) / 2.0f * ((float)M_PI / 180.0f)))) * (180.0f / (float)M_PI) * 100.0f) / 100.0f / 10000.0f;
-            break;
+            FOVOffset = std::round((2.0f * atan(((aspectRatio) / (16.0f / 9.0f)) * tan((originalFOV * 10000.0f) / 2.0f * ((float)M_PI / 180.0f)))) * (180.0f / (float)M_PI) * 100.0f) / 100.0f / 10000.0f;
         }
-        case 1:
-        {
-			// Subtracts the custom FOV by the default FOV to get the difference
-			float FOVDifference = (float)customFOV - 90.0f;
-            // If useCustomFOV is set to "1", then calculate the vertical FOV using the new aspect ratio, the old aspect ratio, and the desired custom FOV (based on the FOVDifference to offset any oddities).
-            FOV = round((2.0f * atan(((aspectRatio) / (16.0f / 9.0f)) * tan(((originalFOV * 10000.0f) + FOVDifference) / 2.0f * ((float)M_PI / 180.0f)))) * (180.0f / (float)M_PI) * 100.0f) / 100.0f / 10000.0f;
-            break;
-        }
+    }
+    else
+    {
+        FOVOffset = std::round((2.0f * atan(((aspectRatio) / (16.0f / 9.0f)) * tan((originalFOV * 10000.0f) / 2.0f * ((float)M_PI / 180.0f)))) * (180.0f / (float)M_PI) * 100.0f) / 100.0f / 10000.0f;
     }
 
     // Writes FOV to Memory.
-    *(float*)((intptr_t)baseModule + 0x27C8B70) = FOV;
+    *(float*)((intptr_t)baseModule + 0x27BE520) = FOVOffset;
 }
 
 void uncapFPS() //Uncaps the framerate.
 {
 	//Writes the new t.MaxFPS cap to memory, alongside pointer.
-	*(float*)(*((intptr_t*)((intptr_t)baseModule + 0x0342AB50)) + 0x0) = (float)maxFPS;
+	*(float*)(*((intptr_t*)((intptr_t)baseModule + 0x0341E820)) + 0x0) = (float)maxFPS;
 }
 
 void pillarboxRemoval() // Adjusts pillarboxes based on the current aspect ratio. Probably requires exiting to the main menu to apply the static ones.
@@ -115,15 +121,15 @@ void pillarboxRemoval() // Adjusts pillarboxes based on the current aspect ratio
 
 void resolutionCheck()
 {
-    if (aspectRatio != (*(int*)((intptr_t)baseModule + 0x317DB38) / *(int*)((intptr_t)baseModule + 0x317DB3C)))
+    if (aspectRatio != (*(int*)((intptr_t)baseModule + 0x338AF74) / *(int*)((intptr_t)baseModule + 0x338AF78)))
     {
-        fovCalc();
+        fovOffsetCalc();
     }
 }
 
 void framerateCheck()
 {
-	if (maxFPS != *(float*)(*((intptr_t*)((intptr_t)baseModule + 0x0342AB50)) + 0x0))
+	if (maxFPS != *(float*)(*((intptr_t*)((intptr_t)baseModule + 0x0341E820)) + 0x0))
 	{
 		uncapFPS();
 	}
@@ -135,11 +141,11 @@ void StartPatch()
     readConfig();
 
 	// Unprotects the main module handle.
-	ScopedUnprotect::FullModule UnProtect(baseModule);;
+	ScopedUnprotect::FullModule UnProtect(baseModule);
 
     Sleep(5000); // Sleeps the thread for five seconds before applying the memory values.
 
-	fovCalc(); // Calculates the new vertical FOV.
+	fovOffsetCalc(); // Calculates the new vertical FOV.
 
     pillarboxRemoval(); // Removes the in-game pillarboxing.
 

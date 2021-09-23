@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="34">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>249</ID>
+      <Description>"Pillarboxes"</Description>
+      <LastState Value="F6 41 30 01" RealAddress="7FF668333F0A"/>
+      <ShowAsHex>1</ShowAsHex>
+      <VariableType>Array of byte</VariableType>
+      <ByteLength>4</ByteLength>
+      <Address>"Pineapple-Win64-Shipping.exe"+1723F0A</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>254</ID>
+      <Description>"FOV Offset (Use "0.0116563337" for 21:9, "0.008726646" for 16:9)"</Description>
+      <LastState Value="0.01165633369" RealAddress="7FF6693CE520"/>
+      <VariableType>Float</VariableType>
+      <Address>"Pineapple-Win64-Shipping.exe"+27BE520</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>264</ID>
+      <Description>"t.MaxFPS"</Description>
+      <LastState Value="144" RealAddress="1EAD9475678"/>
+      <VariableType>Float</VariableType>
+      <Address>"Pineapple-Win64-Shipping.exe"+0341E820</Address>
+      <Offsets>
+        <Offset>0</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>265</ID>
+      <Description>"pointerscan result"</Description>
+      <LastState Value="144" RealAddress="1EAD9475678"/>
+      <VariableType>Float</VariableType>
+      <Address>"Pineapple-Win64-Shipping.exe"+0341E818</Address>
+      <Offsets>
+        <Offset>38</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>256</ID>
+      <Description>"hRes"</Description>
+      <LastState Value="2560" RealAddress="7FF669F9AF74"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Pineapple-Win64-Shipping.exe"+338AF74</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>257</ID>
+      <Description>"vRes"</Description>
+      <LastState Value="1080" RealAddress="7FF669F9AF78"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Pineapple-Win64-Shipping.exe"+338AF78</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>263</ID>
+      <Description>"No description"</Description>
+      <LastState Value="3B 8E E3 3F" RealAddress="1EA87AB9308"/>
+      <ShowAsHex>1</ShowAsHex>
+      <VariableType>Array of byte</VariableType>
+      <ByteLength>4</ByteLength>
+      <Address>1EA87AB9308</Address>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
