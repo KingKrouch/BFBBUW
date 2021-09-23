@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\Source\ThirdParty\ModUtils\Patterns.cpp">
+      <Filter>Source Files\ThirdParty\ModUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\MemoryMgr.h">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\ModuleList.hpp">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\Patterns.h">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\Trampoline.h">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\DelimStringReader.h">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\HookInit.hpp">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\LateStaticInit.h">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\ModUtils\MemoryMgr.GTA.h">
+      <Filter>Header Files\ThirdParty\ModUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\IniReader\ini_parser.hpp">
+      <Filter>Header Files\ThirdParty\IniReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThirdParty\IniReader\IniReader.h">
+      <Filter>Header Files\ThirdParty\IniReader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b5747f20-f9f4-4847-bc31-2d992e64998e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{acf3f3c8-bd7e-4c10-8120-8740320df100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ThirdParty">
+      <UniqueIdentifier>{9bac1f29-b79d-4426-9db0-a4de7892ddab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ThirdParty\ModUtils">
+      <UniqueIdentifier>{0cfb9cc7-8907-42a8-8181-ea8d739647ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ThirdParty">
+      <UniqueIdentifier>{97926599-ff34-4e66-9175-9e79d2d217d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ThirdParty\ModUtils">
+      <UniqueIdentifier>{3466d7cd-5c11-4cfc-aff3-c6d7e813fe53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ThirdParty\IniReader">
+      <UniqueIdentifier>{2d97d705-7213-4e38-ab6e-4394764ac44a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
